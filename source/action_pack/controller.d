@@ -43,6 +43,8 @@ class ActionController : DynamicClass {
       builder ~= controllerName;
 
       string factory = join(builder, ".");
+      import std.stdio;
+      writeln("Attempting to load " ~ factory);
       auto   controller = cast(ActionController) Object.factory(factory);
 
       if (controller is null) {

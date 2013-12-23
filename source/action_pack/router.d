@@ -293,17 +293,12 @@ private string skipPathNode(string str, ref size_t idx) {
 unittest {
   import dunit.toolkit;
 
-  class MainController : ActionController {
-    mixin DynamicClassImplementation!();
-  }
-
   string[string] params;
   auto route = new ActionRoute(HTTPMethod.GET, "/", "MainController", "index");
   route.path.assertEqual("/");
   route.controllerName.assertEqual("MainController");
   route.method.assertEqual(HTTPMethod.GET);
   route.action.assertEqual("index");
-  //to!string(route.controller).assertEqual("core.controllers.main.MainController");
 
   route.matches("/", params).assertEqual(true);
   route.matches("/foo", params).assertEqual(false);
