@@ -1,0 +1,10 @@
+{
+	"name": "action-dispatch",
+	"description": "A minimal D application.",
+	"copyright": "Copyright © 2013, jared",
+	"authors": ["jared"],
+	"dependencies": {
+    "vibe-d": ">=0.7.17",
+    "dunit": "1.0.4",
+	}
+}
