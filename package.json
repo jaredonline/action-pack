@@ -1,8 +1,8 @@
 {
 	"name": "action-dispatch",
-	"description": "A minimal D application.",
-	"copyright": "Copyright © 2013, jared",
-	"authors": ["jared"],
+	"description": "A router and controller implemenation for use with vibe.d",
+	"copyright": "Copyright © 2013, Jared McFarland",
+	"authors": ["jaredonline"],
 	"dependencies": {
     "vibe-d": ">=0.7.17",
     "dunit": "1.0.4",
