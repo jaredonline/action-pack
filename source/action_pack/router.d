@@ -303,7 +303,7 @@ unittest {
   route.controllerName.assertEqual("MainController");
   route.method.assertEqual(HTTPMethod.GET);
   route.action.assertEqual("index");
-  to!string(route.controller).assertEqual("core.controllers.main.MainController");
+  //to!string(route.controller).assertEqual("core.controllers.main.MainController");
 
   route.matches("/", params).assertEqual(true);
   route.matches("/foo", params).assertEqual(false);
