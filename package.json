@@ -1,5 +1,5 @@
 {
-	"name": "action-dispatch",
+	"name": "action-pack",
 	"description": "A router and controller implemenation for use with vibe.d",
   "license": "MIT",
 	"copyright": "Copyright © 2013, Jared McFarland",
