@@ -36,6 +36,11 @@ class ActionController : DynamicClass {
     __send__(action);
   }
 
+  @DynamicallyAvailable
+  void assets() {
+    serveStaticFiles("./public/");
+  }
+
   protected {
     void respondTo(string format, void delegate() yield) {
       if (_format == format)
@@ -52,8 +57,6 @@ class ActionController : DynamicClass {
       builder ~= controllerName;
 
       string factory = join(builder, ".");
-      import std.stdio;
-      writeln("Attempting to load " ~ factory);
       auto   controller = cast(ActionController) Object.factory(factory);
 
       if (controller is null) {

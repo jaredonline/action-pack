@@ -93,6 +93,11 @@ class ActionRouter : HTTPServerRequestHandler {
     return this;
   }
 
+  ActionRouter assets(string route) {
+    match(HTTPMethod.GET, route, "ActionController", "assets");
+    return this;
+  }
+
   ActionRouter match(HTTPMethod method, string path, string controller, string action) {
     assert(count(path, ':') <= ActionRoute.maxRouteParameters, "Too many route parameters");
     auto route = new ActionRoute(method, path, controller, action);
@@ -171,4 +176,7 @@ unittest {
 
   router.route(HTTPMethod.GET, "/bloggers.json", params).assertInstanceOf!(ActionRoute)();
   params["format"].assertEqual("json");
+
+  router.assets("*");
+  router.route(HTTPMethod.GET, "/js/all.js", params).assertInstanceOf!(ActionRoute)();
 }
