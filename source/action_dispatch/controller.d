@@ -38,7 +38,7 @@ class ActionController : DynamicClass {
 
   @DynamicallyAvailable
   void assets() {
-    serveStaticFiles("./public/");
+    serveStaticFiles("./public/")(_request, _response);
   }
 
   protected {

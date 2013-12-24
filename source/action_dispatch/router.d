@@ -178,5 +178,8 @@ unittest {
   params["format"].assertEqual("json");
 
   router.assets("*");
-  router.route(HTTPMethod.GET, "/js/all.js", params).assertInstanceOf!(ActionRoute)();
+  auto r = router.route(HTTPMethod.GET, "/js/all.js", params);
+  r.assertInstanceOf!(ActionRoute)();
+  r.controllerName.assertEqual("ActionController");
+  r.action.assertEqual("assets");
 }
