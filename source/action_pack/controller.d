@@ -10,6 +10,7 @@ class ActionController : DynamicClass {
   protected {
     HTTPServerRequest  _request;
     HTTPServerResponse _response;
+    string             _format;
   }
 
   @property HTTPServerRequest request() {
@@ -31,7 +32,15 @@ class ActionController : DynamicClass {
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res, string action) {
     _request  = req;
     _response = res;
+    _format   = req.params["format"];
     __send__(action);
+  }
+
+  protected {
+    void respondTo(string format, void delegate() yield) {
+      if (_format == format)
+        yield();
+    }
   }
 
   static {
