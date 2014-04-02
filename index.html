@@ -80,113 +80,113 @@
 
 <table>
 <thead><tr>
-<th>Method</th>
-<th>Route</th>
-<th>Controller</th>
-<th>Action</th>
+<th align="left">Method</th>
+<th align="left">Route</th>
+<th align="left">Controller</th>
+<th align="left">Action</th>
 </tr></thead>
 <tbody>
 <tr>
-<td>GET</td>
-<td>/</td>
-<td>BooksController</td>
-<td>#ndex</td>
+<td align="left">GET</td>
+<td align="left">/</td>
+<td align="left">BooksController</td>
+<td align="left">#ndex</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:author_id/books</td>
-<td>BooksController</td>
-<td>#index</td>
+<td align="left">GET</td>
+<td align="left">/authors/:author_id/books</td>
+<td align="left">BooksController</td>
+<td align="left">#index</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:author_id/books/new</td>
-<td>BooksController</td>
-<td>#init</td>
+<td align="left">GET</td>
+<td align="left">/authors/:author_id/books/new</td>
+<td align="left">BooksController</td>
+<td align="left">#init</td>
 </tr>
 <tr>
-<td>POST</td>
-<td>/authors/:author_id/books</td>
-<td>BooksController</td>
-<td>#create</td>
+<td align="left">POST</td>
+<td align="left">/authors/:author_id/books</td>
+<td align="left">BooksController</td>
+<td align="left">#create</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:author_id/books/:id</td>
-<td>BooksController</td>
-<td>#show</td>
+<td align="left">GET</td>
+<td align="left">/authors/:author_id/books/:id</td>
+<td align="left">BooksController</td>
+<td align="left">#show</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:author_id/books/:id/edit</td>
-<td>BooksController</td>
-<td>#edit</td>
+<td align="left">GET</td>
+<td align="left">/authors/:author_id/books/:id/edit</td>
+<td align="left">BooksController</td>
+<td align="left">#edit</td>
 </tr>
 <tr>
-<td>PUT</td>
-<td>/authors/:author_id/books/:id</td>
-<td>BooksController</td>
-<td>#update</td>
+<td align="left">PUT</td>
+<td align="left">/authors/:author_id/books/:id</td>
+<td align="left">BooksController</td>
+<td align="left">#update</td>
 </tr>
 <tr>
-<td>PATCH</td>
-<td>/authors/:author_id/books/:id</td>
-<td>BooksController</td>
-<td>#update</td>
+<td align="left">PATCH</td>
+<td align="left">/authors/:author_id/books/:id</td>
+<td align="left">BooksController</td>
+<td align="left">#update</td>
 </tr>
 <tr>
-<td>DELETE</td>
-<td>/authors/:author_id/books/:id</td>
-<td>BooksController</td>
-<td>#destroy</td>
+<td align="left">DELETE</td>
+<td align="left">/authors/:author_id/books/:id</td>
+<td align="left">BooksController</td>
+<td align="left">#destroy</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors</td>
-<td>AuthorsController</td>
-<td>#index</td>
+<td align="left">GET</td>
+<td align="left">/authors</td>
+<td align="left">AuthorsController</td>
+<td align="left">#index</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/new</td>
-<td>AuthorsController</td>
-<td>#init</td>
+<td align="left">GET</td>
+<td align="left">/authors/new</td>
+<td align="left">AuthorsController</td>
+<td align="left">#init</td>
 </tr>
 <tr>
-<td>POST</td>
-<td>/authors</td>
-<td>AuthorsController</td>
-<td>#create</td>
+<td align="left">POST</td>
+<td align="left">/authors</td>
+<td align="left">AuthorsController</td>
+<td align="left">#create</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:id</td>
-<td>AuthorsController</td>
-<td>#show</td>
+<td align="left">GET</td>
+<td align="left">/authors/:id</td>
+<td align="left">AuthorsController</td>
+<td align="left">#show</td>
 </tr>
 <tr>
-<td>GET</td>
-<td>/authors/:id/edit</td>
-<td>AuthorsController</td>
-<td>#edit</td>
+<td align="left">GET</td>
+<td align="left">/authors/:id/edit</td>
+<td align="left">AuthorsController</td>
+<td align="left">#edit</td>
 </tr>
 <tr>
-<td>PUT</td>
-<td>/authors/:id</td>
-<td>AuthorsController</td>
-<td>#update</td>
+<td align="left">PUT</td>
+<td align="left">/authors/:id</td>
+<td align="left">AuthorsController</td>
+<td align="left">#update</td>
 </tr>
 <tr>
-<td>PATCH</td>
-<td>/authors/:id</td>
-<td>AuthorsController</td>
-<td>#update</td>
+<td align="left">PATCH</td>
+<td align="left">/authors/:id</td>
+<td align="left">AuthorsController</td>
+<td align="left">#update</td>
 </tr>
 <tr>
-<td>DELETE</td>
-<td>/authors/:id</td>
-<td>AuthorsController</td>
-<td>#destroy</td>
+<td align="left">DELETE</td>
+<td align="left">/authors/:id</td>
+<td align="left">AuthorsController</td>
+<td align="left">#destroy</td>
 </tr>
 </tbody>
 </table><p>From just a few lines of code we get 17 routes! All with automatic params. As you can see, we made a <em>ton</em> of assumptinos to get here, but this way favors convention over a bunch of manual configuration.</p>
