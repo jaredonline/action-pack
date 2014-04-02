@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>D Lang Action Pack by jaredonline</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>D Lang Action Pack</h1>
+        <h2>Rails-like routing for your Vibe.D project!</h2>
+        <a href="https://github.com/jaredonline/action-pack" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="d-lang-action-pack" class="anchor" href="#d-lang-action-pack"><span class="octicon octicon-link"></span></a>D Lang Action Pack</h1>
+
+<p>A router for use with <a href="http://vibed.org/">Vibe-D</a> that mimics the way routers and controllers work in <a href="http://rubyonrails.org/">Rails</a>.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add the following to your <code>package.json</code> file:</p>
+
+<div class="highlight highlight-json"><pre><span class="s2">"dependencies"</span><span class="err">:</span> <span class="p">{</span>
+    <span class="nt">"action-pack"</span><span class="p">:</span> <span class="s2">"~master"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Here's a very quick sample run through of how you can use the <code>ActionPack</code> routing.</p>
+
+<h3>
+<a name="appd-and-the-router" class="anchor" href="#appd-and-the-router"><span class="octicon octicon-link"></span></a>App.d and the router</h3>
+
+<p>First you have to setup your <code>app.d</code> file with your router and your list of routes:</p>
+
+<div class="highlight highlight-d"><pre><span class="c1">// app.d</span>
+
+<span class="k">import</span> <span class="n">vibe</span><span class="p">.</span><span class="n">d</span><span class="p">;</span>
+<span class="k">import</span> <span class="n">action_dispatch</span><span class="p">.</span><span class="n">all</span><span class="p">;</span>
+
+<span class="n">shared</span> <span class="k">static</span> <span class="k">this</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">router</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ActionRouter</span><span class="p">;</span>
+    <span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"BooksController"</span><span class="p">,</span> <span class="s">"index"</span><span class="p">);</span>
+
+    <span class="n">router</span><span class="p">.</span><span class="n">resources</span><span class="p">(</span><span class="s">"authors"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span> <span class="p">(</span><span class="n">ActionNamespace</span> <span class="n">authors</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">authors</span><span class="p">.</span><span class="n">resources</span><span class="p">(</span><span class="s">"books"</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">auto</span> <span class="n">settings</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HTTPServerSettings</span><span class="p">;</span>
+    <span class="n">settings</span><span class="p">.</span><span class="n">port</span> <span class="p">=</span> <span class="mi">8080</span><span class="p">;</span>
+
+    <span class="n">listenHTTP</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">router</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>In the above example we map the default route of <code>/</code> to be handled by the <code>BooksController</code> action <code>index</code>.</p>
+
+<p>Then we define a resource, <code>authors</code> and a sub resource for <code>authors</code>: <code>books</code>. This generates a routing table:</p>
+
+<table>
+<thead><tr>
+<th>Method</th>
+<th>Route</th>
+<th>Controller</th>
+<th>Action</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/</td>
+<td>BooksController</td>
+<td>#ndex</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:author_id/books</td>
+<td>BooksController</td>
+<td>#index</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:author_id/books/new</td>
+<td>BooksController</td>
+<td>#init</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/authors/:author_id/books</td>
+<td>BooksController</td>
+<td>#create</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:author_id/books/:id</td>
+<td>BooksController</td>
+<td>#show</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:author_id/books/:id/edit</td>
+<td>BooksController</td>
+<td>#edit</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/authors/:author_id/books/:id</td>
+<td>BooksController</td>
+<td>#update</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>/authors/:author_id/books/:id</td>
+<td>BooksController</td>
+<td>#update</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/authors/:author_id/books/:id</td>
+<td>BooksController</td>
+<td>#destroy</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors</td>
+<td>AuthorsController</td>
+<td>#index</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/new</td>
+<td>AuthorsController</td>
+<td>#init</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/authors</td>
+<td>AuthorsController</td>
+<td>#create</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:id</td>
+<td>AuthorsController</td>
+<td>#show</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/authors/:id/edit</td>
+<td>AuthorsController</td>
+<td>#edit</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/authors/:id</td>
+<td>AuthorsController</td>
+<td>#update</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>/authors/:id</td>
+<td>AuthorsController</td>
+<td>#update</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/authors/:id</td>
+<td>AuthorsController</td>
+<td>#destroy</td>
+</tr>
+</tbody>
+</table><p>From just a few lines of code we get 17 routes! All with automatic params. As you can see, we made a <em>ton</em> of assumptinos to get here, but this way favors convention over a bunch of manual configuration.</p>
+
+<h3>
+<a name="controllers" class="anchor" href="#controllers"><span class="octicon octicon-link"></span></a>Controllers</h3>
+
+<p>Next we setup our two controller:</p>
+
+<div class="highlight highlight-d"><pre><span class="c1">// /source/core/controllers/authors_controller.d</span>
+
+<span class="k">module</span> <span class="n">core</span><span class="p">.</span><span class="n">controllers</span><span class="p">.</span><span class="n">authors</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="n">action_dispatch</span><span class="p">.</span><span class="n">all</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="n">AuthorsController</span> <span class="p">:</span> <span class="n">ActionController</span> <span class="p">{</span>
+  <span class="k">mixin</span> <span class="n">DynamicClassImplementation</span><span class="p">!();</span>
+
+  <span class="c1">// GET /authors</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">respondTo</span><span class="p">(</span><span class="s">"html"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"authors/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /authors/new</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// POST /authors</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /authors/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /authors/:id/edit</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// PUT/PATCH /authors/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// DELETE /authors/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// /source/core/controllers/books_controller.d</span>
+
+<span class="k">module</span> <span class="n">core</span><span class="p">.</span><span class="n">controllers</span><span class="p">.</span><span class="n">books</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="n">action_dispatch</span><span class="p">.</span><span class="n">all</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="n">BooksController</span> <span class="p">:</span> <span class="n">ActionController</span> <span class="p">{</span>
+  <span class="k">mixin</span> <span class="n">DynamicClassImplementation</span><span class="p">!();</span>
+
+  <span class="c1">// GET /books</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">respondTo</span><span class="p">(</span><span class="s">"html"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"books/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /books/new</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// POST /books</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /books/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// GET /books/:id/edit</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// PUT/PATCH /books/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+
+  <span class="c1">// DELETE /books/:id</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
+  <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// render the right view</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>There's a lot going on up there, but it's pretty simple. Basically, for every resource, we have a controller. So for the <code>books</code> resource we have the <code>BooksController</code> and for the <code>authors</code> resource, we have the <code>AuthorsController</code>. When a request comes in to <code>ActionPack</code> and a match is found, we instantiate a new instance of the controller and call the appropriate method on it. So, if we request <code>/authors</code>, internally <code>ActionPack</code> is doing something like this:</p>
+
+<div class="highlight highlight-d"><pre><span class="n">controller</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthorsController</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">params</span><span class="p">);</span>
+<span class="n">controller</span><span class="p">.</span><span class="n">index</span><span class="p">();</span>
+</pre></div>
+
+<p>Pretty simple.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (git checkout -b my-new-feature)</li>
+<li>Commit your changes (git commit -am 'Added some feature')</li>
+<li>Push to the branch (git push origin my-new-feature)</li>
+<li>Create new Pull Request</li>
+</ol><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/jaredonline/action-pack/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jaredonline/action-pack/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/jaredonline/action-pack"></a> is maintained by <a href="https://github.com/jaredonline">jaredonline</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
