@@ -49,7 +49,7 @@ Then we define a resource, `authors` and a sub resource for `authors`: `books`. 
 
 
 |Method|Route|Controller|Action|
-|------|-----------|-----|----|
+|:------|:-----------|:-----|:----|
 |GET|/|BooksController|#ndex|
 |GET|/authors/:author_id/books|BooksController|#index|
 |GET|/authors/:author_id/books/new|BooksController|#init|
