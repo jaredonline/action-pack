@@ -15,6 +15,10 @@ Add the following to your `package.json` file:
 
 ## Usage
 
+Here's a very quick sample run through of how you can use the `ActionPack` routing.
+
+### App.d and the router
+
 First you have to setup your `app.d` file with your router and your list of routes:
 
 ```d
@@ -47,15 +51,26 @@ Then we define a resource, `authors` and a sub resource for `authors`: `books`. 
 |Method|Route|Controller|Action|
 |------|-----------|-----|----|
 |GET|/|BooksController|#ndex|
-|GET|/books|BooksController|#index|
-|GET|/books/new|BooksController|#init|
-|POST|/books|BooksController|#create|
-|GET|/books/:id|BooksController|#show|
-|GET|/books/:id/edit|BooksController|#edit|
-|PUT|/books/:id|BooksController|#update|
-|PATCH|/books/:id|BooksController|#update|
-|DELETE|/books/:id|BooksController|#destroy|
+|GET|/authors/:author_id/books|BooksController|#index|
+|GET|/authors/:author_id/books/new|BooksController|#init|
+|POST|/authors/:author_id/books|BooksController|#create|
+|GET|/authors/:author_id/books/:id|BooksController|#show|
+|GET|/authors/:author_id/books/:id/edit|BooksController|#edit|
+|PUT|/authors/:author_id/books/:id|BooksController|#update|
+|PATCH|/authors/:author_id/books/:id|BooksController|#update|
+|DELETE|/authors/:author_id/books/:id|BooksController|#destroy|
+|GET|/authors|AuthorsController|#index|
+|GET|/authors/new|AuthorsController|#init|
+|POST|/authors|AuthorsController|#create|
+|GET|/authors/:id|AuthorsController|#show|
+|GET|/authors/:id/edit|AuthorsController|#edit|
+|PUT|/authors/:id|AuthorsController|#update|
+|PATCH|/authors/:id|AuthorsController|#update|
+|DELETE|/authors/:id|AuthorsController|#destroy|
 
+From just a few lines of code we get 17 routes! All with automatic params. As you can see, we made a *ton* of assumptinos to get here, but this way favors convention over a bunch of manual configuration.
+
+### Controllers
 
 Next we setup our two controller:
 
@@ -169,4 +184,24 @@ class BooksController : ActionController {
 }
 ```
 
-There's a lot going on up there. 
+There's a lot going on up there, but it's pretty simple. Basically, for every resource, we have a controller. So for the `books` resource we have the `BooksController` and for the `authors` resource, we have the `AuthorsController`. When a request comes in to `ActionPack` and a match is found, we instantiate a new instance of the controller and call the appropriate method on it. So, if we request `/authors`, internally `ActionPack` is doing something like this:
+
+```d
+controller = new AuthorsController(request, response, params);
+controller.index();
+```
+
+Pretty simple.
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Added some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create new Pull Request
+
+## License
+
+MIT.
+
