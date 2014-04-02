@@ -68,6 +68,8 @@ Then we define a resource, `authors` and a sub resource for `authors`: `books`. 
 |PATCH|/authors/:id|AuthorsController|#update|
 |DELETE|/authors/:id|AuthorsController|#destroy|
 
+
+
 From just a few lines of code we get 17 routes! All with automatic params. As you can see, we made a *ton* of assumptinos to get here, but this way favors convention over a bunch of manual configuration.
 
 ### Controllers
