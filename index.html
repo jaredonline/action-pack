@@ -39,7 +39,7 @@
 <p>Add the following to your <code>package.json</code> file:</p>
 
 <div class="highlight highlight-json"><pre><span class="s2">"dependencies"</span><span class="err">:</span> <span class="p">{</span>
-    <span class="nt">"action-pack"</span><span class="p">:</span> <span class="s2">"~master"</span>
+  <span class="nt">"action-pack"</span><span class="p">:</span> <span class="s2">"~master"</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -49,7 +49,7 @@
 <p>Here's a very quick sample run through of how you can use the <code>ActionPack</code> routing.</p>
 
 <h3>
-<a name="appd-and-the-router" class="anchor" href="#appd-and-the-router"><span class="octicon octicon-link"></span></a>App.d and the router</h3>
+<a name="appd-and-the-router" class="anchor" href="#appd-and-the-router"><span class="octicon octicon-link"></span></a><code>App.d</code> and the router</h3>
 
 <p>First you have to setup your <code>app.d</code> file with your router and your list of routes:</p>
 
@@ -205,48 +205,47 @@
 <span class="k">class</span> <span class="n">AuthorsController</span> <span class="p">:</span> <span class="n">ActionController</span> <span class="p">{</span>
   <span class="k">mixin</span> <span class="n">DynamicClassImplementation</span><span class="p">!();</span>
 
-  <span class="c1">// GET /authors</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">respondTo</span><span class="p">(</span><span class="s">"html"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
-      <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"authors/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span> <span class="p">{</span>
+    <span class="c1">// GET /authors</span>
+    <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">respondTo</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">(</span><span class="n">Format</span> <span class="n">format</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">format</span><span class="p">.</span><span class="n">html</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
+          <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"books/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+        <span class="p">});</span>
 
-  <span class="c1">// GET /authors/new</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+        <span class="n">format</span><span class="p">.</span><span class="n">json</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// render some JSON });</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
 
-  <span class="c1">// POST /authors</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/new</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// GET /authors/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// POST /authors</span>
+    <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// GET /authors/:id/edit</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/:id</span>
+    <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// PUT/PATCH /authors/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/:id/edit</span>
+    <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// DELETE /authors/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
+    <span class="c1">// PUT/PATCH /authors/:id</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
+
+    <span class="c1">// DELETE /authors/:id</span>
+    <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -259,48 +258,47 @@
 <span class="k">class</span> <span class="n">BooksController</span> <span class="p">:</span> <span class="n">ActionController</span> <span class="p">{</span>
   <span class="k">mixin</span> <span class="n">DynamicClassImplementation</span><span class="p">!();</span>
 
-  <span class="c1">// GET /books</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">respondTo</span><span class="p">(</span><span class="s">"html"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
-      <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"books/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
-    <span class="p">});</span>
-  <span class="p">}</span>
+  <span class="err">@</span><span class="n">DynamicallyAvailable</span> <span class="p">{</span>
+    <span class="c1">// GET /authors/:authors_id/books</span>
+    <span class="kt">void</span> <span class="n">index</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">respondTo</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">(</span><span class="n">Format</span> <span class="n">format</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">format</span><span class="p">.</span><span class="n">html</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span>
+          <span class="n">response</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"books/index.dt"</span><span class="p">,</span> <span class="n">request</span><span class="p">);</span>
+        <span class="p">});</span>
 
-  <span class="c1">// GET /books/new</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+        <span class="n">format</span><span class="p">.</span><span class="n">json</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// render some JSON });</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
 
-  <span class="c1">// POST /books</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/:authors_id/books/new</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// GET /books/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// POST /authors/:authors_id/books</span>
+    <span class="kt">void</span> <span class="n">create</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// GET /books/:id/edit</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/:authors_id/books/:id</span>
+    <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// PUT/PATCH /books/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
-  <span class="p">}</span>
+    <span class="c1">// GET /authors/:authors_id/books/:id/edit</span>
+    <span class="kt">void</span> <span class="n">edit</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
 
-  <span class="c1">// DELETE /books/:id</span>
-  <span class="err">@</span><span class="n">DynamicallyAvailable</span>
-  <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// render the right view</span>
+    <span class="c1">// PUT/PATCH /authors/:authors_id/books/:id</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
+
+    <span class="c1">// DELETE /authors/:authors_id/books/:id</span>
+    <span class="kt">void</span> <span class="n">destroy</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the right view</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -312,6 +310,150 @@
 </pre></div>
 
 <p>Pretty simple.</p>
+
+<h1>
+<a name="in-depth" class="anchor" href="#in-depth"><span class="octicon octicon-link"></span></a>In depth</h1>
+
+<p>I'll go over the concepts more in depth here.</p>
+
+<h2>
+<a name="controllers-1" class="anchor" href="#controllers-1"><span class="octicon octicon-link"></span></a>Controllers</h2>
+
+<p>Controllers are objects that represent the group of logic around a single resource. They're the "C" in <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>. In <code>action-pack</code> they have play a central role of responding to requests. Every route is defined with a controller and an action. An action is a method on a controller with the signature:</p>
+
+<div class="highlight highlight-d"><pre><span class="kt">void</span><span class="p">()</span>
+</pre></div>
+
+<p>which is pretty easy to implement. They don't return anything (because there isn't anything listening for a return value). They just manipulate the <code>response</code> object.</p>
+
+<h3>
+<a name="actions" class="anchor" href="#actions"><span class="octicon octicon-link"></span></a>Actions</h3>
+
+<p>Actions can really perform any amount of work required to process a request. They have access to the <code>request</code> object and the <code>response</code> object as well as the <code>params</code>.</p>
+
+<h3>
+<a name="params" class="anchor" href="#params"><span class="octicon octicon-link"></span></a>Params</h3>
+
+<p>Every action has access to a <code>@property</code> called <code>params</code>. This has the parsed params from the route with strings as keys. So with the route:</p>
+
+<pre><code>/authors/:author_id/books
+</code></pre>
+
+<p>And the URL</p>
+
+<pre><code>/authors/1/books
+</code></pre>
+
+<p>The <code>params</code> hash will look like this:</p>
+
+<pre><code>{
+  "params": "1"
+}
+</code></pre>
+
+<p>Notice that the <code>1</code> is a <code>string</code> and not an <code>integer</code>.</p>
+
+<h3>
+<a name="respondto" class="anchor" href="#respondto"><span class="octicon octicon-link"></span></a>respondTo</h3>
+
+<p>To make routing more restful, I've added an implementation of Rails <code>#respondTo</code> method for <code>ActionController</code>. There are two version of the <code>#respondTo</code> method.</p>
+
+<p>The first one is:</p>
+
+<div class="highlight highlight-d"><pre><span class="kt">void</span> <span class="n">respondTo</span><span class="p">(</span><span class="nb">string</span> <span class="n">format</span><span class="p">,</span> <span class="kt">void</span> <span class="k">delegate</span><span class="p">()</span> <span class="n">yield</span><span class="p">)</span>
+</pre></div>
+
+<p>This one takes a <code>string</code> as the first argument and a <code>delegate</code> method. The string has to be a literal match to the current <code>format</code> specified by the controller (based on the extension of the request, for example, <code>.html</code>). The delegate is only called if there is a match, otherwise nothing is done.</p>
+
+<p>The second is:</p>
+
+<div class="highlight highlight-d"><pre><span class="kt">void</span> <span class="n">respondTo</span><span class="p">(</span><span class="kt">void</span> <span class="k">delegate</span><span class="p">(</span><span class="n">Format</span><span class="p">)</span> <span class="n">yield</span><span class="p">)</span>
+</pre></div>
+
+<p>This one only takes the <code>delegate</code>, but this <code>delegate</code> must accept a single argument, which is a <code>Format</code> object. The <code>Format</code> object is very simple and provides some shortcut methods. This way you can do things like</p>
+
+<div class="highlight highlight-d"><pre><span class="n">format</span><span class="p">.</span><span class="n">html</span><span class="p">(</span><span class="k">delegate</span> <span class="kt">void</span><span class="p">(</span><span class="n">Format</span> <span class="n">format</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// do stuff here if this an html request });</span>
+</pre></div>
+
+<p>This way, in a single <code>respondTo</code> <code>delegate</code> method you can address multiple formats.</p>
+
+<h2>
+<a name="routing" class="anchor" href="#routing"><span class="octicon octicon-link"></span></a>Routing</h2>
+
+<p>The goal of this is to make routing as dead simple as possible, and to avoid writing a bunch of redundant code. The <code>vibe.d</code> example on routing looks like this:</p>
+
+<div class="highlight highlight-d"><pre><span class="n">shared</span> <span class="k">static</span> <span class="k">this</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">auto</span> <span class="n">router</span> <span class="p">=</span> <span class="k">new</span> <span class="n">URLRouter</span><span class="p">;</span>
+  <span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="p">&amp;</span><span class="n">index</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">index</span><span class="p">(</span><span class="n">HTTPServerRequest</span> <span class="n">req</span><span class="p">,</span> <span class="n">HTTPServerResponse</span> <span class="n">res</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">res</span><span class="p">.</span><span class="n">render</span><span class="p">!(</span><span class="s">"index.dt"</span><span class="p">,</span> <span class="n">req</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>For a restful API this would require writing code by hand that looks very similar over and over again:</p>
+
+<div class="highlight highlight-d"><pre><span class="n">shared</span> <span class="k">static</span> <span class="k">this</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">auto</span> <span class="n">router</span> <span class="p">=</span> <span class="k">new</span> <span class="n">URLRouter</span><span class="p">;</span>
+  <span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/books"</span><span class="p">);</span>
+  <span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/books/:id"</span><span class="p">);</span>
+  <span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/books/new"</span><span class="p">);</span>
+
+  <span class="c1">// etc etc</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>And that only gets us through a single resource. Because I come from a Rails background I figured there has to be a way to clean this up.</p>
+
+<h3>
+<a name="reources" class="anchor" href="#reources"><span class="octicon octicon-link"></span></a>Reources</h3>
+
+<p>Resources are at the heart of routing in <code>action-pack</code>. A resource is defined with just a name, and using that as a default URL root and default controller. Every resource automatically defines several routes. The simples way to define a resource:</p>
+
+<div class="highlight highlight-d"><pre><span class="k">auto</span> <span class="n">router</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ActionRouter</span><span class="p">;</span>
+<span class="n">router</span><span class="p">.</span><span class="n">resources</span><span class="p">(</span><span class="s">"books"</span><span class="p">);</span>
+</pre></div>
+
+<p>Because the convention for a resource is well defined, this one line can extrapolate all the routes we intend for this resource and hook them up to the appropriate controller and actions.</p>
+
+<h4>
+<a name="nesting" class="anchor" href="#nesting"><span class="octicon octicon-link"></span></a>Nesting</h4>
+
+<p>Because resources frequently belong to one another, they can be nested:</p>
+
+<div class="highlight highlight-d"><pre><span class="k">auto</span> <span class="n">router</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ActionRouter</span><span class="p">;</span>
+<span class="n">router</span><span class="p">.</span><span class="n">resources</span><span class="p">(</span><span class="s">"authors"</span><span class="p">,</span> <span class="k">delegate</span> <span class="kt">void</span> <span class="p">(</span><span class="n">ActionNamespace</span> <span class="n">authors</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">authors</span><span class="p">.</span><span class="n">resources</span><span class="p">(</span><span class="s">"books"</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>This will generate the <code>books</code> routes with a prefix automatically of <code>authors/:author_id</code>.</p>
+
+<h3>
+<a name="custom-routes" class="anchor" href="#custom-routes"><span class="octicon octicon-link"></span></a>Custom Routes</h3>
+
+<p>Internally when you call <code>#resources</code> on <code>ActionRouter</code>, it just calls a group of helper methods. All of these methods are publicly accessible, so you can use them to create custom routes.</p>
+
+<p>If you want to have a <code>GET</code> request for <code>/about</code> (and not an entire resource), you can route it manually:</p>
+
+<div class="highlight highlight-d"><pre><span class="n">router</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/about"</span><span class="p">,</span> <span class="s">"MainController"</span><span class="p">,</span> <span class="s">"about"</span><span class="p">);</span>
+</pre></div>
+
+<p>The first param is the path, the second is the name (as a string) of the controller and the last is the action to call.</p>
+
+<h3>
+<a name="assets" class="anchor" href="#assets"><span class="octicon octicon-link"></span></a>Assets</h3>
+
+<p>Assets aren't supported right now, but there's a sort of solution:</p>
+
+<div class="highlight highlight-d"><pre><span class="n">router</span><span class="p">.</span><span class="n">assets</span><span class="p">(</span><span class="s">"*"</span><span class="p">);</span>
+</pre></div>
+
+<p>This sets up a globally accepted route, so it should always be defined last. It takes any route and looks in the <code>./public</code> folder for a match. Like I said, not that great, but it works.</p>
 
 <h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
