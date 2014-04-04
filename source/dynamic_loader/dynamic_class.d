@@ -23,6 +23,8 @@ bool isDynamicallyAvailable(alias member)() {
   return false;
 }
 
+// TODO: Figure out a way to store the method here so that we can call it
+//       again later without having to look it up again.
 mixin template DynamicClassImplementation() {
   override Variant __send__(string method, string[] arguments) {
     // Get all the members for the current type
@@ -104,4 +106,35 @@ bool doesClassMatch(ClassInfo classInfo) {
 	if(classInfo.base !is null)
 		return doesClassMatch(classInfo.base);
 	return false;
+}
+
+unittest {
+  import dunit.toolkit;
+
+  class Foo : DynamicClass {
+    mixin DynamicClassImplementation!();
+
+    @DynamicallyAvailable {
+      string bar() {
+        return "Bar";
+      }
+
+      string fizzbuzzer(int num) {
+        if (num % 15 == 0) {
+          return "fizzbuzz";
+        } else if (num % 5 == 0) {
+          return "buzz";
+        } else if (num % 3 == 0) {
+          return "fizz";
+        } else {
+          return to!string(num);
+        }
+      }
+    }
+  }
+
+  auto foo = new Foo;
+  foo.__send__("bar").assertEqual("Bar");
+  foo.__send__("fizzbuzzer", ["1"]).assertEqual("1");
+  foo.__send__("fizzbuzzer", ["15"]).assertEqual("fizzbuzz");
 }

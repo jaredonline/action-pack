@@ -2,7 +2,9 @@ module action_dispatch.controller;
 
 import vibe.d;
 public import dynamic_loader.dynamic_class;
+
 import std.regex;
+import action_dispatch.format;
 
 class ActionController : DynamicClass {
   mixin DynamicClassImplementation!();
@@ -13,27 +15,39 @@ class ActionController : DynamicClass {
     string             _format;
   }
 
-  @property HTTPServerRequest request() {
-    return _request;
-  }
+  @property {
+    HTTPServerRequest request() {
+      return _request;
+    }
 
-  @property HTTPServerResponse response() {
-    return _response;
-  }
+    HTTPServerResponse response() {
+      return _response;
+    }
 
-  @property void request(HTTPServerRequest request) {
-    _request = request;
-  }
+    void request(HTTPServerRequest request) {
+      _request = request;
+    }
 
-  @property void response(HTTPServerResponse response) {
-    _response = response;
+    void response(HTTPServerResponse response) {
+      _response = response;
+    }
+
+    void format(string format) {
+      _format = format;
+    }
   }
 
   void handleRequest(HTTPServerRequest req, HTTPServerResponse res, string action) {
-    _request  = req;
-    _response = res;
-    _format   = req.params["format"];
-    __send__(action);
+    try {
+      _request  = req;
+      _response = res;
+      _format   = req.params["format"];
+      __send__(action);
+    } finally {
+      _request  = null;
+      _response = null;
+      _format   = null;
+    }
   }
 
   @DynamicallyAvailable
@@ -45,6 +59,11 @@ class ActionController : DynamicClass {
     void respondTo(string format, void delegate() yield) {
       if (_format == format)
         yield();
+    }
+
+    void respondTo(void delegate(Format) yield) {
+      auto format = new Format(_format);
+      yield(format);
     }
   }
 
@@ -71,4 +90,37 @@ class ActionController : DynamicClass {
       return controller;
     }
   }
+}
+
+unittest {
+  import dunit.toolkit;
+
+  struct F { int a; }
+
+  class FooController : ActionController {
+    mixin DynamicClassImplementation!();
+
+    void foo(out F _foo) {
+      respondTo(delegate void(Format format) {
+        format.html(delegate void() { _foo.a = 3; });
+      });
+    }
+  }
+
+  // This is a super janky test; basically we're testing that the
+  // new version of #respondTo works correctly by setting up
+  // the FooController which modifies the `f` variable only
+  // when the format is "html"
+  F f = { a: 0 };
+  auto foo = new FooController;
+  foo.format = "html";
+  foo.foo(f);
+  f.a.assertEqual(3);
+
+  // The negative side of the test just makes sure that it doesn't
+  // modify the z struct when the format is set to "json"
+  F z = { a: 0 };
+  foo.format = "json";
+  foo.foo(z);
+  z.a.assertEqual(0);
 }
