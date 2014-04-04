@@ -158,6 +158,7 @@ unittest {
 
   router.route(HTTPMethod.GET, "/authors/1/books/12", params).assertInstanceOf!(ActionRoute)();
   params["author_id"].assertEqual("1");
+  params["id"].assertEqual("12");
 
   router.resources("bloggers", delegate void (ActionNamespace bloggers) {
     bloggers.resources("blogs", delegate void (ActionNamespace blogs) {
